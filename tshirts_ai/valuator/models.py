@@ -14,8 +14,13 @@ graph = tf.compat.v1.get_default_graph()
 
 class Tshirt(models.Model):
     image = models.ImageField(upload_to='photos')
+
+    comment = models.CharField(max_length=100)
+    up_date = models.DateField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
     IMAGE_SIZE = 224  # 画像サイズ
-    MODEL_FILE_PATH = './carbike/ml_models/vgg16_transfer.h5'  # Model file
+    MODEL_FILE_PATH = './valuator/ml_models/vgg16_Tshirts.h5'  # Model file
     classes = [
         "0300-0800", "0800-1300", "1300-1800", "1800-2500",
         "2500-3200", "3200-4000", "4000-5000", "5000-"
@@ -50,3 +55,11 @@ class Tshirt(models.Model):
             base64_img = base64.b64encode(img.read()).decode()
 
             return 'data:' + img.file.content_type + ';base64,' + base64_img
+
+class User(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    email = models.EmailField()
+
+    def __str__(self):
+        return "%s %s" % (self.first_name, self.last_name)
