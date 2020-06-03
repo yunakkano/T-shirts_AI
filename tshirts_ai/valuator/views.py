@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.template import loader
 from .forms import PhotoForm
-from .models import Photo
+from .models import Tshirt
 
 
 def index(request):
@@ -28,16 +28,16 @@ def valuator(request):
     if not form.is_valid():
         raise ValueError("Form invalid")
 
-    photo = Photo(image=form.cleaned_data['image'])
+    tshirt = Tshirt(image=form.cleaned_data['image'])
     # Call the method to predict
-    predicted, percentage = photo.valuator()
+    predicted, percentage = tshirt.valuator()
 
     template = loader.get_template('valuator/result.html')
     context = {
         'predicted':predicted,
         'percentage':percentage,
-        'photo_name':photo.image.name,
-        'photo_data':photo.image_source(),
+        'tshirt_name':tshirt.image.name,
+        'tshirt_data':tshirt.image_source(),
     }
 
     return HttpResponse(template.render(context, request))
