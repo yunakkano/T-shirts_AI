@@ -34,7 +34,7 @@ class Tshirt(models.Model):
     ]
     num_classes = len(classes)
 
-    def predict(self):
+    def valuate(self):
         model = None
         global graph  # graph is called every time to use the same VGG16 model
         with graph.as_default():
