@@ -1,0 +1,20 @@
+{% extends 'valuator/base.html' %}
+{% block title %}Tシャツ鑑定アプリメニュー
+{% endblock %}
+
+{% block content %}
+<div>
+	<h4 class="mt-4 mb-5 border-bottom">Tシャツ鑑定アプリ</h4>
+	<p>鑑定ボタン</p>
+	<form action="{% url 'valuator:valuate' %}" method="post" class="form" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="form-group">
+		<div class="custom-file">
+			{{ form.image }}
+			<label class="custom-file-label" for="customFile">Tシャツの画像ファイルを選択</label>
+		</div>
+	</div>
+	<button type="submit" class="btn btn-primary">鑑定！</button>
+	</form>
+</div>
+{% endblock %}
