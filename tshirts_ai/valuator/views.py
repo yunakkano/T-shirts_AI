@@ -17,7 +17,7 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-def valuator(request):
+def valuate(request):
     # POST request = file upload from upload button
     if not request.method == 'POST':
         return
@@ -30,7 +30,7 @@ def valuator(request):
 
     tshirt = Tshirt(image=form.cleaned_data['image'])
     # Call the method to predict
-    predicted, percentage = tshirt.valuator()
+    predicted, percentage = tshirt.valuate()
 
     template = loader.get_template('valuator/result.html')
     context = {
