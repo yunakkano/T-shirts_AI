@@ -1,0 +1,31 @@
+{% extends 'valuator/base.html' %}
+{% block title %}Tシャツ鑑定結果
+{% endblock %}
+
+{% block content %}
+<div>
+	<h4 class="mt-4 mb-5 border-bottom">鑑定結果</h4>
+	<table class="table">
+        <tbody>
+            <tr>
+                <td>Preview</td>
+                <td><img class="preview-img" src={{ photo_data }}></img></td>
+            </tr>
+            <tr>
+                <td>File name</td>
+                <td>{{ photo_name }}</td>
+            </tr>
+            <tr>
+                <td>Pediction label</td>
+                <td>{{ predicted }}</td>
+            </tr>
+            <tr>
+                <td>Confidence</td>
+                <td>{{ percentage }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{% url 'valuator:index' %}" class="btn btn-primary">メニューに戻る</a>
+</div>
+{% endblock %}
