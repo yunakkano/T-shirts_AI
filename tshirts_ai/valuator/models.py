@@ -11,6 +11,13 @@ import base64
 # Initialize graph variable to load Prediction model.
 graph = tf.compat.v1.get_default_graph()
 
+class User(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    email = models.EmailField()
+
+    def __str__(self):
+        return "%s %s" % (self.first_name, self.last_name)
 
 class Tshirt(models.Model):
     image = models.ImageField(upload_to='photos')
@@ -55,11 +62,3 @@ class Tshirt(models.Model):
             base64_img = base64.b64encode(img.read()).decode()
 
             return 'data:' + img.file.content_type + ';base64,' + base64_img
-
-class User(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    email = models.EmailField()
-
-    def __str__(self):
-        return "%s %s" % (self.first_name, self.last_name)
