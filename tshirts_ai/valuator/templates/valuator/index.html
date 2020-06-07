@@ -1,4 +1,4 @@
-{% extends 'valuator/base.html' %}
+{% extends 'base.html' %}
 {% block title %}Tシャツ鑑定アプリメニュー
 {% endblock %}
 
@@ -16,5 +16,32 @@
 	</div>
 	<button type="submit" class="btn btn-primary">鑑定！</button>
 	</form>
+	<br><br>
+	<table class="table">
+        <tbody>
+			{% for tshirt in tshirts.all %}
+            <tr>
+                <td>プレビュー</td>
+                <td><img class="preview-img" src='{{ tshirt.image.url }}'></img></td>
+            </tr>
+            <tr>
+                <td>鑑定結果</td>
+                <td>{{ tshirt.price_range }}円</td>
+            </tr>
+            <tr>
+                <td>メモ</td>
+                <td>{{ tshirt.summary }}</td>
+            </tr>
+            <tr>
+                <td>信頼度</td>
+                <td>{{ tshirt.confidence }}%</td>
+            </tr>
+			<tr>
+                <td>鑑定日</td>
+                <td>{{ tshirt.saved_at }}%</td>
+            </tr>
+			{% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}
