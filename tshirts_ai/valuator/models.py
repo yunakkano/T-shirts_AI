@@ -11,6 +11,7 @@ import base64
 # Initialize graph variable to load Prediction model.
 graph = tf.compat.v1.get_default_graph()
 
+
 class User(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -19,11 +20,13 @@ class User(models.Model):
     def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)
 
-class Tshirt(models.Model):
-    image = models.ImageField(upload_to='photos')
 
-    comment = models.CharField(max_length=100)
-    up_date = models.DateField()
+class Tshirt(models.Model):
+    image = models.ImageField(upload_to='Photos/')
+    # image = models.ImageField()
+    price_range = models.CharField(max_length=50)
+    comment = models.TextField()
+    saved_at = models.DateField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     IMAGE_SIZE = 224  # 画像サイズ
