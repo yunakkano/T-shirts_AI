@@ -21,4 +21,5 @@ app_name = 'valuator'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('valuator/', include('valuator.urls')),
+    path('cam_valuator/', include('cam_valuator.urls')),
 ]
