@@ -7,14 +7,11 @@ from .models import Tshirt
 
 
 def index(request):
-    # Load Django HTML template: loader.get_template will look in './valuator/templates' folder without direction.
-    # valuator/index.html is a subfolder under './valuator/templates' folder
-    template = loader.get_template('valuator/index.html')
-
-    # context contains variables to be passed to Django HTML template.
-    # 'form' variable in the Django HTML holds information of PhotoForm instance
-    context = {'form': PhotoForm()}
-    return HttpResponse(template.render(context, request))
+    # template = loader.get_template('valuator/index.html')
+    tshirts = Tshirt.objects.order_by('-saved_at')
+    context = {'form': PhotoForm(), 'tshirts': tshirts}
+    return render(request, 'valuator/index.html', context)
+    # return HttpResponse(template.render(context, request))
 
 
 def valuate(request):
