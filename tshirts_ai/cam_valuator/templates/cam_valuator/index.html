@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Tシャツ鑑定アプリメニュー
+{% endblock %}
+
+{% block content %}
+
+<div>
+	<h4 class="mt-4 mb-5 border-bottom">Tシャツ鑑定アプリ-カメラ撮影</h4>
+	<video id="camera" width="600" height="450"></video>
+    <form>
+        <button type="button" id="shutter">Tシャツを撮影</button>
+    </form>
+    <canvas id="picture" width="400" height="300"></canvas>
+
+    <script>
+    window.onload = () => {
+        const video  = document.querySelector("#camera");
+        const canvas = document.querySelector("#picture");
+        const se     = document.querySelector('#se');
+
+        /** カメラ設定 **/
+        const constraints = {
+            audio: false,
+            video: {
+                width: { min: 800, ideal: 800, max: 1920 },
+                height: { min: 600, ideal: 600, max: 1080 },
+                facingMode: "user"   // フロントカメラを利用する
+                // facingMode: { exact: "environment" }  // リアカメラを利用する場合
+            }
+        };
+
+        /** カメラを<video>と同期 **/
+        navigator.mediaDevices.getUserMedia(constraints)
+        .then( (stream) => {
+            video.srcObject = stream;
+            video.onloadedmetadata = (e) => {
+            video.play();
+            };
+        })
+        .catch( (err) => {
+            console.log(err.name + ": " + err.message);
+        });
+
+        /** シャッターボタン **/
+        document.querySelector("#shutter").addEventListener("click", () => {
+            const ctx = canvas.getContext("2d");
+
+            // 演出的な目的で一度映像を止めてSEを再生する
+            video.pause();  // 映像を停止
+            //se.play();      // シャッター音
+            setTimeout( () => {
+            video.play();    // 0.5秒後にカメラ再開
+            }, 500);
+
+            // canvasに画像を貼り付ける
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        });
+    };
+    </script>
+    <form action="{% url 'cam_valuator:cam_valuate' %}" method="post" class="form">
+    {% csrf_token %}
+        <input type="hidden" name="width" value="">
+        <input type="hidden" name="height" value="">
+        <input type="hidden" name="image_data" value="">
+        <button type="submit" class="btn btn-primary" onclick="submit_pixels()">このTシャツを鑑定！</button>
+    </form>
+    <script>
+        function submit_pixels() {
+            var canvas = document.getElementById( "picture" ) 
+            $('form input[name=image_data]').val(canvas.toDataURL("image/png"));
+            $('form input[name=width]').val(canvas.width);
+            $('form input[name=height]').val(canvas.height);
+            $('form').submit();
+        }
+    </script>
+</div>
+{% endblock %}
