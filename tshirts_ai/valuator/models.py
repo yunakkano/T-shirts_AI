@@ -27,6 +27,7 @@ class Tshirt(models.Model):
     price_range = models.CharField(max_length=50)
     comment = models.TextField()
     saved_at = models.DateField()
+    confidence = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     IMAGE_SIZE = 224  # 画像サイズ
@@ -65,3 +66,11 @@ class Tshirt(models.Model):
             base64_img = base64.b64encode(img.read()).decode()
 
             return 'data:' + img.file.content_type + ';base64,' + base64_img
+
+    def __str__(self):
+        return self.comment
+
+    def summary(self):
+        dots = '...' if len(self.comment) > 20 else ''
+        return self.comment[:20] + dots
+
