@@ -1,4 +1,4 @@
-{% extends 'valuator/base.html' %}
+{% extends 'base.html' %}
 {% block title %}Tシャツ鑑定結果
 {% endblock %}
 
@@ -8,20 +8,20 @@
 	<table class="table">
         <tbody>
             <tr>
-                <td>Preview</td>
-                <td><img class="preview-img" src={{ photo_data }}></img></td>
+                <td>プレビュー</td>
+                <td><img class="preview-img" src={{ tshirt_data }}></img></td>
             </tr>
             <tr>
-                <td>File name</td>
-                <td>{{ photo_name }}</td>
+                <td>ファイル名</td>
+                <td>{{ tshirt_name }}</td>
             </tr>
             <tr>
-                <td>Pediction label</td>
-                <td>{{ predicted }}</td>
+                <td>鑑定結果</td>
+                <td>{{ predicted }} 円</td>
             </tr>
             <tr>
-                <td>Confidence</td>
-                <td>{{ percentage }}</td>
+                <td>信頼度</td>
+                <td>{{ percentage }}%</td>
             </tr>
         </tbody>
     </table>
