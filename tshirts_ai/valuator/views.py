@@ -34,10 +34,10 @@ def valuate(request):
 
     template = loader.get_template('valuator/result.html')
     context = {
-        'predicted':predicted,
-        'percentage':percentage,
-        'tshirt_name':tshirt.image.name,
-        'tshirt_data':tshirt.image_source(),
+        'predicted':    predicted,
+        'percentage':   percentage,
+        'tshirt_name':  tshirt.image.name,
+        'tshirt_data':  tshirt.image_source(),
     }
 
     return HttpResponse(template.render(context, request))
