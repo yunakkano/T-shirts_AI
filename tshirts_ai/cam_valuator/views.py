@@ -38,13 +38,13 @@ def cam_valuate(request):
     image_data = BytesIO(image_data)
     im = Image.open(image_data)
     assert (image_width, image_height,) == im.size
-    imName = str(dt.now()).replace(" ","_").replace(":","") + '.png'
-    im.save('tmp/'+ imName, "png")
+    imName = str(dt.now()).replace(" ", "_").replace(":", "") + '.png'
+    im.save('tmp/' + imName, "png")
 
     reopen = open('tmp/' + imName, 'rb')
     django_file = File(reopen)
     tshirt = Tshirt(image=django_file)
-    #tshirt.image.save(imName, django_file, save=True)
+    # tshirt.image.save(imName, django_file, save=True)
     # Call the method to predict
     predicted, percentage = tshirt.valuate()
     template = loader.get_template('cam_valuator/result.html')
