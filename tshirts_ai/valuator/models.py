@@ -73,4 +73,3 @@ class Tshirt(models.Model):
     def summary(self):
         dots = '...' if len(self.comment) > 20 else ''
         return self.comment[:20] + dots
-
