@@ -5,7 +5,6 @@
 {% block content %}
 <div>
 	<h4 class="mt-4 mb-5 border-bottom">Tシャツ鑑定アプリ</h4>
-	<p>鑑定ボタン</p>
 	<form action="{% url 'valuator:valuate' %}" method="post" class="form" enctype="multipart/form-data">
 	{% csrf_token %}
 	<div class="form-group">
@@ -21,25 +20,13 @@
         <tbody>
 			{% for tshirt in tshirts.all %}
             <tr>
-                <td>プレビュー</td>
-                <td><img class="preview-img" src='{{ tshirt.image.url }}'></img></td>
-            </tr>
-            <tr>
-                <td>鑑定結果</td>
-                <td>{{ tshirt.price_range }}円</td>
-            </tr>
-            <tr>
-                <td>メモ</td>
-                <td>{{ tshirt.summary }}</td>
-            </tr>
-            <tr>
-                <td>信頼度</td>
-                <td>{{ tshirt.confidence }}%</td>
-            </tr>
-			<tr>
-                <td>鑑定日</td>
-                <td>{{ tshirt.saved_at }}%</td>
-            </tr>
+				<td><img class="preview-img" src='{{ tshirt.image.url }}'></img></td>
+                <td>
+					<div>鑑定結果</div>
+					<div>{{ tshirt.price_range }}円</div>
+					<div><a href="{% url 'valuator:tshirt_detail' tshirt.id %}">詳細を確認</a></div>
+				</td>
+			</tr>
 			{% endfor %}
         </tbody>
     </table>
