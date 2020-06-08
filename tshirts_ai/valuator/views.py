@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.template import loader
@@ -12,6 +13,11 @@ def index(request):
     context = {'form': PhotoForm(), 'tshirts': tshirts}
     return render(request, 'valuator/index.html', context)
     # return HttpResponse(template.render(context, request))
+
+
+def tshirt_detail(request, tshirt_id):
+    tshirt = get_object_or_404(Tshirt, pk=tshirt_id)
+    return render(request, 'valuator/tshirt_detail.html', {'tshirt': tshirt })
 
 
 def valuate(request):
