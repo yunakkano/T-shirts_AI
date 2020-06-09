@@ -82,6 +82,7 @@ DATABASES = {
         'USER': 'root',  # ログインユーザー名
         'HOST': '',
         'PORT': '',
+        'ATOMIC_REQUESTS': True,
     }
 }
 
