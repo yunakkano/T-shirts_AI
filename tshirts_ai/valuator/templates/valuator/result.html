@@ -9,15 +9,11 @@
         <tbody>
             <tr>
                 <td>プレビュー</td>
-                <td><img class="preview-img" src={{ tshirt_data }}></img></td>
-            </tr>
-            <tr>
-                <td>ファイル名</td>
-                <td>{{ tshirt_name }}</td>
+                <td><img class="img-fluid rounded" src={{ tshirt_data }}></img></td>
             </tr>
             <tr>
                 <td>鑑定結果</td>
-                <td>{{ predicted }} 円</td>
+                <td>{{ predicted }}</td>
             </tr>
             <tr>
                 <td>信頼度</td>
@@ -25,7 +21,20 @@
             </tr>
         </tbody>
     </table>
-
-    <a href="{% url 'valuator:index' %}" class="btn btn-primary">メニューに戻る</a>
-</div>
+    <form action="{% url 'valuator:save_result' %}" method="post" class="form">
+    {% csrf_token %}
+        <input type="hidden" name="saving" value='True'>
+        <input type="hidden" name="tshirt_name" value="{{ tshirt_name }}">
+        <input type="hidden" name="predicted" value="{{ predicted }}">
+        <input type="hidden" name="percentage" value="{{ percentage }}">
+        <input type="text" name="comment" value="{{ comment }}" placeholder="コメントを入力"><br><br>
+        <button type="submit" class="btn btn-primary">結果を保存</button>
+    </form>
+    <br><br>
+    <form action="{% url 'valuator:save_result' %}" method="post" class="form">
+    {% csrf_token %}
+        <input type="hidden" name="saving" value='False'>
+        <input type="hidden" name="tshirt_name" value="{{ tshirt_name }}">
+        <button type="submit" class="btn btn-primary">メニューに戻る</button>
+    </form></div>
 {% endblock %}
