@@ -1,32 +1,25 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.http import HttpResponse
-from django.template import loader
-from valuator.forms import PhotoForm
+from django.shortcuts import get_object_or_404
+
 from django.core.files import File
 from valuator.models import Tshirt
+from valuator.models import User
 
 
 from io import BytesIO
 from PIL import Image
 import base64
 import re
+import os
 from datetime import datetime as dt
 
 
 def index(request):
-    # Load Django HTML template: loader.get_template will look in './valuator/templates' folder without direction.
-    # valuator/index.html is a subfolder under './valuator/templates' folder
-    template = loader.get_template('cam_valuator/index.html')
-
-    # context contains variables to be passed to Django HTML template.
-    # 'form' variable in the Django HTML holds information of PhotoForm instance
-    context = {'form': PhotoForm()}
-    return HttpResponse(template.render(context, request))
+    return render(request, 'cam_valuator/index.html', {})
 
 
 def cam_valuate(request):
-    # POST request = file upload from upload button
     if not request.method == 'POST':
         return
         redirect('cam_valuator:index')
@@ -39,19 +32,41 @@ def cam_valuate(request):
     im = Image.open(image_data)
     assert (image_width, image_height,) == im.size
     imName = str(dt.now()).replace(" ", "_").replace(":", "") + '.png'
-    im.save('tmp/' + imName, "png")
+    im.save('media/tmp/' + imName, "png")
 
-    reopen = open('tmp/' + imName, 'rb')
-    django_file = File(reopen)
-    tshirt = Tshirt(image=django_file)
-    # tshirt.image.save(imName, django_file, save=True)
-    # Call the method to predict
-    predicted, percentage = tshirt.valuate()
-    template = loader.get_template('cam_valuator/result.html')
+    with open('media/tmp/' + imName, 'rb') as reopen:
+        django_file = File(reopen)
+        tshirt = Tshirt(image=django_file)
+        predicted, percentage = tshirt.valuate()
+
     context = {
         'predicted':    predicted,
         'percentage':   percentage,
-        'tshirt_name':  tshirt.image.name,
-        'tshirt_data':  image_str,
+        'tshirt_name':  str(tshirt.image.name).split('/')[-1],
+        'tshirt_data':  image_str
     }
-    return HttpResponse(template.render(context, request))
+    return render(request, 'cam_valuator/result.html', context)
+
+
+def save_result(request):
+    if not request.method == 'POST':
+        return redirect('index')
+    if request.POST['saving'] == 'True':
+        with open('media/tmp/' + request.POST['tshirt_name'], 'rb') as reopen:
+            django_file = File(reopen)
+            django_file.name = django_file.name.replace('media/tmp/','')
+            tshirt = Tshirt(
+                image=django_file,
+                price_range=request.POST['predicted'],
+                comment=request.POST['comment'],
+                saved_at=dt.now(),
+                confidence=request.POST['percentage'],
+                user=get_object_or_404(User, pk=2)
+                )
+            tshirt.save()
+        os.remove('media/tmp/' + request.POST['tshirt_name'])
+        return redirect('index')
+    else:
+        os.remove('media/tmp/' + request.POST['tshirt_name'])
+        return redirect('cam_valuator:index')
+    
