@@ -20,10 +20,10 @@
         <tbody>
 			{% for tshirt in tshirts.all %}
             <tr>
-				<td><img class="preview-img" src='{{ tshirt.image.url }}'></img></td>
+				<td><img class="img-fluid rounded" src='{{ tshirt.image.url }}'></img></td>
                 <td>
 					<div>鑑定結果</div>
-					<div>{{ tshirt.price_range }}円</div>
+					<div>{{ tshirt.price_range }}</div>
 					<div><a href="{% url 'valuator:tshirt_detail' tshirt.id %}">詳細を確認</a></div>
 				</td>
 			</tr>

@@ -9,7 +9,7 @@
         <tbody>
             <tr>
                 <td>プレビュー</td>
-                <td><img class="preview-img" src='{{ tshirt.image.url }}'></img></td>
+                <td><img class="img-fluid rounded" src='{{ tshirt.image.url }}'></img></td>
             </tr>
             <tr>
                 <td>ファイル名</td>
@@ -34,6 +34,6 @@
         </tbody>
     </table>
 
-    <a href="{% url 'valuator:index' %}" class="btn btn-primary">メニューに戻る</a>
+    <a href="{% url 'index' %}" class="btn btn-primary">メニューに戻る</a>
 </div>
 {% endblock %}
