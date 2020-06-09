@@ -4,7 +4,6 @@ from valuator.models import Tshirt
 
 
 def index(request):
-    # template = loader.get_template('valuator/index.html')
     tshirts = Tshirt.objects.order_by('-saved_at')
     context = {'tshirts': tshirts}
     return render(request, 'index.html', context)
