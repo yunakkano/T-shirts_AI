@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}ログインページ
+{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content%}
+    <form method="POST" class="form-group" action="">
+       {% csrf_token %}
+       {{ form | crispy }}
+       <p>アカウントをお持ちでない方は<a href="/register"></a>コチラ！</p>
+       <button type ="submit" class="btn btn-primary">ログイン</button>
+    </form>
+{% endblock %}

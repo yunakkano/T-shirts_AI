@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Tシャツ鑑定アプリメニュー
+{% endblock %}
+
+{% block content %}
+<div>
+	{% if current_user.is_authenticated %}
+		<h4 class="mt-4 mb-5 border-bottom">最近の鑑定</h4>
+		<table class="table">
+			{% if tshirts %}
+			{{ tshirts | length }}件の鑑定結果があります。<BR><BR>
+			<tbody>
+				{% for tshirt in tshirts.all %}
+				<tr>
+					<td><img class="img-fluid rounded" src='{{ tshirt.image.url }}'></img></td>
+					<td>
+						<div>鑑定結果</div>
+						<div>{{ tshirt.price_range }}</div>
+						<div><a href="{% url 'valuator:tshirt_detail' tshirt.id %}">詳細</a></div>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+			{% else %}
+				まだ鑑定結果がありません。
+			{% endif %}
+		</table>
+	{% else%}
+		<h4 class="mt-4 mb-5 border-bottom">ログインしてください</h4>
+	{% endif %}
+</div>
+{% endblock %}

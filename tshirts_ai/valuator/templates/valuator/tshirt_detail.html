@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Tシャツ鑑定結果
+{% endblock %}
+
+{% block content %}
+<div>
+	<h4 class="mt-4 mb-5 border-bottom">Tシャツ鑑定詳細</h4>
+	<table class="table">
+        <tbody>
+            <tr>
+                <td>プレビュー</td>
+                <td><img class="img-fluid rounded" src='{{ tshirt.image.url }}'></img></td>
+            </tr>
+            <tr>
+                <td>鑑定結果</td>
+                <td>{{ tshirt.price_range }} 円</td>
+            </tr>
+            <tr>
+                <td>信頼度</td>
+                <td>{{ tshirt.confidence }}%</td>
+            </tr>
+            <tr>
+                <td>鑑定日</td>
+                <td>{{ tshirt.saved_at }}</td>
+            </tr>
+            <tr>
+                <td>コメント</td>
+                <td>{{ tshirt.comment }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="{% url 'index' %}" class="btn btn-primary">メニューに戻る</a>
+    <br><br>
+    <form action="{% url 'valuator:delete_result' %}" method="post" class="form">
+    {% csrf_token %}
+        <input type="hidden" name="tshirt_id" value="{{ tshirt.id }}">
+        <button type="submit" class="btn btn-primary">この鑑定結果を削除</button>
+    </form>
+</div>
+{% endblock %}

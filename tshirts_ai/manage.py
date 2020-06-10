@@ -3,6 +3,10 @@
 import os
 import sys
 
+import pymysql
+pymysql.version_info = (1, 3, 13, "final", 0)
+pymysql.install_as_MySQLdb()
+
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tshirts_ai.settings')

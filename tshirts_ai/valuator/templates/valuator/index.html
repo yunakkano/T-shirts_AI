@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Tシャツ鑑定アプリメニュー
+{% endblock %}
+
+{% block content %}
+<div>
+	{% if current_user.is_authenticated %}
+		<h4 class="mt-4 mb-5 border-bottom">Tシャツ鑑定アプリ</h4>
+		<form action="{% url 'valuator:valuate' %}" method="post" class="form" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="form-group">
+			<div class="custom-file">
+				{{ form.image }}
+				<label class="custom-file-label" for="customFile">Tシャツの画像ファイルを選択</label>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary">鑑定！</button>
+		</form>
+		<br><br>
+		<table class="table">
+			<tbody>
+				{% for tshirt in tshirts.all %}
+				<tr>
+					<td><img class="img-fluid rounded" src='{{ tshirt.image.url }}'></img></td>
+					<td>
+						<div>鑑定結果</div>
+						<div>{{ tshirt.price_range }}</div>
+						<div><a href="{% url 'valuator:tshirt_detail' tshirt.id %}">詳細</a></div>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else%}
+		<h4 class="mt-4 mb-5 border-bottom">ログインしてください</h4>
+	{% endif %}
+</div>
+{% endblock %}
