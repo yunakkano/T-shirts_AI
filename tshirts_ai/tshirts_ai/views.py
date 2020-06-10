@@ -13,5 +13,4 @@ def index(request):
 def tshirt_detail(request, tshirt_id):
     current_user = request.user
     tshirt = get_object_or_404(Tshirt, pk=tshirt_id).filter(user_id=current_user.id).order_by('-saved_at')
-    return render(request, 'tshirt_detail.html', {'tshirt': tshirt })
-
+    return render(request, 'tshirt_detail.html', {'tshirt': tshirt})

@@ -17,7 +17,11 @@ from datetime import datetime as dt
 
 def index(request):
     current_user = request.user
-    return render(request, 'cam_valuator/index.html', {'current_user': current_user})
+    return render(
+        request,
+        'cam_valuator/index.html',
+        {'current_user': current_user}
+        )
 
 
 def cam_valuate(request):
@@ -56,7 +60,7 @@ def save_result(request):
     if request.POST['saving'] == 'True':
         with open('media/tmp/' + request.POST['tshirt_name'], 'rb') as reopen:
             django_file = File(reopen)
-            django_file.name = django_file.name.replace('media/tmp/','')
+            django_file.name = django_file.name.replace('media/tmp/', '')
             tshirt = Tshirt(
                 image=django_file,
                 price_range=request.POST['predicted'],
@@ -71,4 +75,3 @@ def save_result(request):
     else:
         os.remove('media/tmp/' + request.POST['tshirt_name'])
         return redirect('cam_valuator:index')
-    

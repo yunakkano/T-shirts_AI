@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
 from django.core.files import File
 
 from datetime import datetime as dt
@@ -28,7 +26,7 @@ def tshirt_detail(request, tshirt_id):
     current_user = request.user
     tshirt = get_object_or_404(Tshirt, pk=tshirt_id)
     if tshirt.user_id == current_user.id:
-        return render(request, 'valuator/tshirt_detail.html', {'tshirt': tshirt })
+        return render(request, 'valuator/tshirt_detail.html', {'tshirt': tshirt})
     else:
         return redirect('/')
 
@@ -72,7 +70,7 @@ def save_result(request):
     if request.POST['saving'] == 'True':
         with open('media/tmp/' + request.POST['tshirt_name'], 'rb') as reopen:
             django_file = File(reopen)
-            django_file.name = django_file.name.replace('media/tmp/','')
+            django_file.name = django_file.name.replace('media/tmp/', '')
             tshirt = Tshirt(
                 image=django_file,
                 price_range=request.POST['predicted'],

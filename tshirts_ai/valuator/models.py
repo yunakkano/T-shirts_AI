@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 import numpy as np
 import tensorflow as tf
-from tensorflow import keras
 from tensorflow.keras.models import load_model
 from PIL import Image
 import io
