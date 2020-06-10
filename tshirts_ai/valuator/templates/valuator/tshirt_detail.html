@@ -12,14 +12,6 @@
                 <td><img class="img-fluid rounded" src='{{ tshirt.image.url }}'></img></td>
             </tr>
             <tr>
-                <td>ファイル名</td>
-                <td>{{ tshirt.image.name }}</td>
-            </tr>
-            <tr>
-                <td>コメント</td>
-                <td>{{ tshirt.comment }}</td>
-            </tr>
-            <tr>
                 <td>鑑定結果</td>
                 <td>{{ tshirt.price_range }} 円</td>
             </tr>
@@ -31,9 +23,18 @@
                 <td>鑑定日</td>
                 <td>{{ tshirt.saved_at }}</td>
             </tr>
+            <tr>
+                <td>コメント</td>
+                <td>{{ tshirt.comment }}</td>
+            </tr>
         </tbody>
     </table>
-
     <a href="{% url 'index' %}" class="btn btn-primary">メニューに戻る</a>
+    <br><br>
+    <form action="{% url 'valuator:delete_result' %}" method="post" class="form">
+    {% csrf_token %}
+        <input type="hidden" name="tshirt_id" value="{{ tshirt.id }}">
+        <button type="submit" class="btn btn-primary">この鑑定結果を削除</button>
+    </form>
 </div>
 {% endblock %}
