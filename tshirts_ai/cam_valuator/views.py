@@ -16,7 +16,8 @@ from datetime import datetime as dt
 
 
 def index(request):
-    return render(request, 'cam_valuator/index.html', {})
+    current_user = request.user
+    return render(request, 'cam_valuator/index.html', {'current_user': current_user})
 
 
 def cam_valuate(request):
@@ -49,6 +50,7 @@ def cam_valuate(request):
 
 
 def save_result(request):
+    current_user = request.user
     if not request.method == 'POST':
         return redirect('index')
     if request.POST['saving'] == 'True':
@@ -61,7 +63,7 @@ def save_result(request):
                 comment=request.POST['comment'],
                 saved_at=dt.now(),
                 confidence=request.POST['percentage'],
-                user=get_object_or_404(User, pk=2)
+                user=get_object_or_404(User, pk=current_user.id)
                 )
             tshirt.save()
         os.remove('media/tmp/' + request.POST['tshirt_name'])

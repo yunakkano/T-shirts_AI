@@ -17,16 +17,20 @@ import os
 
 
 def index(request):
-    # template = loader.get_template('valuator/index.html')
-    tshirts = Tshirt.objects.order_by('-saved_at')
-    context = {'form': PhotoForm(), 'tshirts': tshirts}
+    current_user = request.user
+    print(current_user.username)
+    tshirts = Tshirt.objects.filter(user_id=current_user.id).order_by('-saved_at')
+    context = {'current_user': current_user, 'form': PhotoForm(), 'tshirts': tshirts}
     return render(request, 'valuator/index.html', context)
-    # return HttpResponse(template.render(context, request))
 
 
 def tshirt_detail(request, tshirt_id):
+    current_user = request.user
     tshirt = get_object_or_404(Tshirt, pk=tshirt_id)
-    return render(request, 'valuator/tshirt_detail.html', {'tshirt': tshirt })
+    if tshirt.user_id == current_user.id:
+        return render(request, 'valuator/tshirt_detail.html', {'tshirt': tshirt })
+    else:
+        return redirect('/')
 
 
 def valuate(request):
@@ -62,6 +66,7 @@ def valuate(request):
 
 
 def save_result(request):
+    current_user = request.user
     if not request.method == 'POST':
         return redirect('index')
     if request.POST['saving'] == 'True':
@@ -74,7 +79,7 @@ def save_result(request):
                 comment=request.POST['comment'],
                 saved_at=dt.now(),
                 confidence=request.POST['percentage'],
-                user=get_object_or_404(User, pk=2)
+                user=get_object_or_404(User, pk=current_user.id)
                 )
             tshirt.save()
         os.remove('media/tmp/' + request.POST['tshirt_name'])
@@ -82,3 +87,15 @@ def save_result(request):
     else:
         os.remove('media/tmp/' + request.POST['tshirt_name'])
         return redirect('valuator:index')
+
+
+def delete_result(request):
+    print(request.method)
+    if not request.method == 'POST':
+        print("Not Delete")
+        return redirect('index')
+
+    tshirt = get_object_or_404(Tshirt, pk=request.POST['tshirt_id'])
+    tshirt.delete()
+
+    return redirect('/')
