@@ -25,7 +25,7 @@ SECRET_KEY = '*1%wc1a8f2vm)uk&6&l+1q&l2!wlmq6e^)#zxcbp%px!butu6('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '3.112.33.164']
 
 
 # Application definition
@@ -82,7 +82,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tshirts_ai',  # 作成したデータベース名
         'USER': 'root',  # ログインユーザー名
-        'HOST': '',
+        # 'PASSWORD': '', This is for production setting.
+        'HOST': 'localhost',
         'PORT': '',
         'ATOMIC_REQUESTS': True,
     }
