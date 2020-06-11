@@ -7,11 +7,11 @@
 <div>
     {% if current_user.is_authenticated %}
         <h4 class="mt-4 mb-5 border-bottom">Tシャツ鑑定アプリ-カメラ撮影</h4>
-        <video id="camera" width="600" height="450"></video>
+        <video id="camera" class="rounded mx-auto d-block" width="600" height="450"></video>
         <form>
             <button type="button" class="btn btn-primary" id="shutter">Tシャツを撮影</button>
         </form>
-        <canvas id="picture" width="400" height="300"></canvas>
+        <canvas id="picture" class="rounded mx-auto d-block" width="400" height="300"></canvas>
 
         <script>
         window.onload = () => {
