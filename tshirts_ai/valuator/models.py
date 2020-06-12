@@ -3,11 +3,14 @@ from django.contrib.auth.models import User
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
+from tensorflow.keras.models import load_model, model_from_json
 from PIL import Image
 from tshirts_ai.settings import BASE_DIR
 import os
 import io
 import base64
+
+graph = tf.compat.v1.get_default_graph()
 
 class Tshirt(models.Model):
     image = models.ImageField(upload_to='Photos/')
@@ -27,24 +30,28 @@ class Tshirt(models.Model):
 
     def valuate(self):
         model = None
-        # global graph  # graph is called every time to use the same VGG16 model
-        # with graph.as_default():
-        model = keras.models.load_model(self.MODEL_FILE_PATH)
-        img_data = self.image.read()
-        # For Pillow to open the image file, convert data to BytesIO
-        img_bin = io.BytesIO(img_data)
-        image = Image.open(img_bin)
-        image = image.convert("RGB")
-        image = image.resize((self.IMAGE_SIZE, self.IMAGE_SIZE))
-        data = np.asarray(image) / 255.0
-        X = []
+        global graph  # graph is called every time to use the same VGG16 model
+        with graph.as_default():
+            # model = keras.models.load_model(self.MODEL_FILE_PATH)  # 2. This is 2nd try
+            # model = load_model(self.MODEL_FILE_PATH)                # 1. This is original
+            json_string = open(os.path.join('valuator/my_model', 'vgg16_Tshirts.json')).read()
+            model = model_from_json(json_string)
+            model.load_weights(os.path.join('valuator/my_model', 'vgg16_Tshirts.hdf5'))
+            img_data = self.image.read()
+            # For Pillow to open the image file, convert data to BytesIO
+            img_bin = io.BytesIO(img_data)
+            image = Image.open(img_bin)
+            image = image.convert("RGB")
+            image = image.resize((self.IMAGE_SIZE, self.IMAGE_SIZE))
+            data = np.asarray(image) / 255.0
+            X = []
 
-        X.append(data)
-        X = np.array(X)
-        result = model.predict([X])[0]  # Obtain the first result
-        predicted = result.argmax()
-        percentage = int(result[predicted] * 100)
-        return self.classes[predicted], percentage
+            X.append(data)
+            X = np.array(X)
+            result = model.predict([X])[0]  # Obtain the first result
+            predicted = result.argmax()
+            percentage = int(result[predicted] * 100)
+            return self.classes[predicted], percentage
 
     def image_source(self):
         with self.image.open() as img:

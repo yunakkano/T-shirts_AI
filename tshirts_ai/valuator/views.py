@@ -16,7 +16,6 @@ import os
 
 def index(request):
     current_user = request.user
-    print(current_user.username)
     tshirts = Tshirt.objects.filter(user_id=current_user.id).order_by('-saved_at')
     context = {'current_user': current_user, 'form': PhotoForm(), 'tshirts': tshirts}
     return render(request, 'valuator/index.html', context)
@@ -88,7 +87,6 @@ def save_result(request):
 
 
 def delete_result(request):
-    print(request.method)
     if not request.method == 'POST':
         print("Not Delete")
         return redirect('index')
