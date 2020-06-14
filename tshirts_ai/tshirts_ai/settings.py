@@ -24,8 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY', 'Token not found')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
+DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', '3.112.33.164']
 
 
@@ -84,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tshirts_ai',  # 作成したデータベース名
         'USER': 'root',  # ログインユーザー名
-        # 'PASSWORD': '', This is for production setting.
+        'PASSWORD': os.getenv('DB_PASS', 'Your pass is not valid.'), 
         'HOST': 'localhost',
         'PORT': '',
         'ATOMIC_REQUESTS': True,

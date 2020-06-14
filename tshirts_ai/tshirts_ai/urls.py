@@ -20,6 +20,7 @@ from django.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
 from . import views
+from . import settings as stgs
 from django.contrib.auth.views import LogoutView
 from register import views as v
 
@@ -32,4 +33,14 @@ urlpatterns = [
     path('', include("django.contrib.auth.urls")),
     path('valuator/', include('valuator.urls')),
     path('cam_valuator/', include('cam_valuator.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if stgs.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+elif getattr(stgs, 'FORCE_SERV_STATIC', False):
+    stgs.DEBUG = True
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(
+        settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    stgs.DEBUG = False
